@@ -1,8 +1,8 @@
 <!-- src/components/HomePage.vue -->
 <template>
-    
+
     <div class="home-page">
-      <h1>Welcome to the Home Page</h1>
+      <h1>Welcome to the our Home Page</h1>
       <p>This is a simple home page with a welcome message.</p>
     </div>
   </template>
