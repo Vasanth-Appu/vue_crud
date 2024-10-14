@@ -1,12 +1,13 @@
 <!-- src/App.vue -->
 <template>
   <v-app>
-    <NavBar />
-    <router-view />
+    <HomePage />
   </v-app>
 </template>
 
 <script setup>
+import HomePage from './components/HomePage.vue';
+
 // No need for any specific imports here
 </script>
 
