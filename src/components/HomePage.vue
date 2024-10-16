@@ -19,20 +19,10 @@
           v-if="Employee.length > 0 && !fetchError"
           loading-text="Loading employee data..."
         >
-          <template #item.actions ="{ item }">
-            <v-btn icon @click="EditEmployeeModal()" class="mx-2" color="secondary">
-              <v-icon>mdi-pencil</v-icon>
-              <EditEmp
-              :openModalEdit="openModalEdit"
-              @close-modal="closeModalEdit"
-              />
-            </v-btn>
-            <v-btn icon @click="deleteEmployee(item)" class="mx-2" color="error">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
+          <template #item.actions="{ item }">
+            <v-btn rounded="xl" size="small" variant="outlined" @click="EditEmployeeModal(item)" class="mx-2" color="info" >Edit</v-btn>
+            <v-btn rounded="xl" size="small" variant="outlined" @click="deleteEmployee(item)" class="mx-2" color="error">Delete</v-btn>
           </template>
-              
-
 
           <template #top>
             <v-toolbar flat>
@@ -47,9 +37,7 @@
                   @form-submit="handleFormSubmit"
                   @close-modal="closeModal"
                 />
-                <v-btn color="secondary" class="mx-2">
-                  Export Excel
-                </v-btn>
+                <v-btn color="secondary" class="mx-2">Export Excel</v-btn>
               </div>
             </v-toolbar>
           </template>
@@ -61,21 +49,34 @@
             ></v-pagination>
           </template>
 
-          <template #no-data>
-            <v-alert type="warning" class="ma-4">
-              No employee data available.
-            </v-alert>
-          </template>
+          
         </v-data-table>
 
-        <v-alert v-if="fetchError" type="error" class="ma-4" dismissible>
-          {{ setMsg }}
+        <v-alert v-if="updateMsg" type="info" class="ma-4" dismissible>
+          {{ updateMsg }}
         </v-alert>
+        <v-alert v-if="fetchMsg" type="error" class="ma-4" dismissible>
+          {{ fetchMsg}}
+        </v-alert>
+        <v-alert v-if="saveMsg" type="success" class="ma-4" dismissible>
+          {{ saveMsg }}
+        </v-alert>
+
+        <!-- Place the EditEmp Component Here -->
+        <EditEmp
+          v-model:openModalEdit="openModalEdit"
+          :employee="EditData"
+          @close-modal="closeModalEdit"
+          @UpdatedEmp="updatedEmp"
+        />
       </div>
+     
     </v-container>
+   
+          
+          
   </v-main>
 </template>
-
 <script setup>
 import { onMounted, ref } from 'vue';
 import AddEmploye from './AddEmploye.vue';
@@ -91,91 +92,103 @@ const tHeader = ref([
   { text: 'Address', value: 'address' },
   { text: 'Actions', value: 'actions', sortable: false },
 ]);
-const setMsg = ref('');
+const saveMsg = ref ('');
+const fetchMsg=ref('');
+const updateMsg = ref('');
 const fetchError = ref(false);
 const isLoading = ref(true);
 const page = ref(1);
 const itemsPerPage = ref(5);
 
-const fetchEmp = async () => { // FETCH DATA 
+const fetchEmp = async () => {
   try {
     const response = await fetch('http://localhost:8080/getUser');
     if (!response.ok) throw new Error('Response is not OK');
     Employee.value = await response.json();
   } catch (error) {
     console.error('Error fetching data: ', error);
-    setMsg.value = 'Failed To Fetch';
+    fetchMsg.value = 'Failed To Fetch';
     fetchError.value = true;
   } finally {
     isLoading.value = false;
   }
 };
+
 const handleFormSubmit = async (data) => {
-  try{
-    const response= await fetch ('http://localhost:8080/addEmployee',{ // POST DATA
-      method:'POST',
-      headers:{'content-type':'application/json'},
+  try {
+    const response = await fetch(`http://localhost:8080/addEmployee`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if(response.ok){
+    if (response.ok) {
       fetchEmp();
-      const result= await response.json();
-      console.log('form submited',result);
-    }else{
-      console.log('not submitted');
-      
-    }
+      saveMsg.value='Saved Successfully'
+      setTimeout(()=>{
+        saveMsg.value='';
+      },3000);
 
-  }catch (error){
-    console.log('Error Network',error);
+    } else {
+      console.log('Form submission failed');
+    }
+  } catch (error) {
+    console.log('Network error:', error);
+  }
+};
+const updatedEmp = async (updatedData) => {
+  try {
+    const response = await fetch(`http://localhost:8080/editEmployee/${updatedData.id}`, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(updatedData),
+    });
+    if (response.ok) {
+      fetchEmp();
+      console.log('Employee updated successfully');
+      fetchError.value=true;
+updateMsg.value = 'Employee updated successfully';
+
+      // Clear the message after 3 seconds
+      setTimeout(() => {
+        updateMsg.value = ''; 
+        fetchError.value=false;
+      }, 3000);     } else {
+      console.log('Error updating employee');
+    }
+  } catch (error) {
+    console.log('Network error:', error);
   }
 };
 
-const editEmployee = (item) => {
-  console.log('Edit employee:', item.id);
-};
-
-const deleteEmployee = async(item) => {
-  try{
-    const response= await fetch(`http://localhost:8080/deleteEmployee/${item.id}`,
-      {
-        method:'DELETE',
-      });
-      if(response.ok){
-        fetchEmp();
-        console.log('Deleted Successfully',item.id);
-        }else{
-          console.log('Deleting Some error occured');
-          
-        }
-  }catch (error){
-console.log('Network Error:',error);
-
+const deleteEmployee = async (item) => {
+  try {
+    const response = await fetch(`http://localhost:8080/deleteEmployee/${item.id}`, {
+      method: 'DELETE',
+    });
+    if (response.ok) {
+      fetchEmp();
+      console.log('Deleted successfully', item.id);
+    } else {
+      console.log('Error deleting employee');
+    }
+  } catch (error) {
+    console.log('Network error:', error);
   }
 };
 
 const openModal = ref(false);
-const addEmployeeModal = () => {
-  openModal.value = true; // Correctly set the openModal state
+const addEmployeeModal = () => (openModal.value = true);
+const closeModal = () => (openModal.value = false);
+
+const openModalEdit = ref(false);
+const EditData = ref({});
+
+const EditEmployeeModal = (item) => {
+  openModalEdit.value = true;
+  EditData.value = { ...item };
 };
 
-const closeModal = () => {
-  openModal.value = false; // Properly close the modal
-};
-
-const openModalEdit=ref(false);
-
-const EditEmployeeModal = () =>{
-  openModalEdit.value=true;
-  if(openModalEdit.value=true){
-  console.log('edit modal is opened');
-  }else{
-    console.log('some error');
-  }
-};
-const closeModalEdit = () => {
-  openModalEdit.value = false; // Properly close the modal
-};
+const closeModalEdit = () => (openModalEdit.value = false);
 
 onMounted(fetchEmp);
 </script>

@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="internalModalVisible" max-width="600px" persistent>
     <v-card>
-      <v-card-title class="headline">Form Modal</v-card-title>
+      <v-card-title class="headline">Fill Form</v-card-title>
 
       <v-card-text>
         <v-form v-model="valid">
