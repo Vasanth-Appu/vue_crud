@@ -29,15 +29,13 @@
               <v-toolbar-title>Employees List</v-toolbar-title>
               <v-spacer></v-spacer>
               <div>
-                <v-btn color="primary" @click="addEmployeeModal" class="mx-2">
-                  Add Employee
-                </v-btn>
+                <v-btn color="primary" @click="addEmployeeModal" class="mx-2">Add Employee</v-btn>
                 <AddEmploye
                   :openModal="openModal"
                   @form-submit="handleFormSubmit"
                   @close-modal="closeModal"
                 />
-                <v-btn color="secondary" class="mx-2">Export Excel</v-btn>
+                <v-btn color="secondary" @click="exportToExcel" class="mx-2">Export Excel</v-btn>
               </div>
             </v-toolbar>
           </template>
@@ -79,9 +77,11 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
+import * as XLSX from 'xlsx';
 import AddEmploye from './AddEmploye.vue';
 import EditEmp from './EditEmp.vue';
 import NavBar from './NavBar.vue';
+
 
 const Employee = ref([]);
 const tHeader = ref([
@@ -189,6 +189,15 @@ const EditEmployeeModal = (item) => {
 };
 
 const closeModalEdit = () => (openModalEdit.value = false);
+
+// Export Excel 
+const exportToExcel = () => {
+  const worksheet = XLSX.utils.json_to_sheet(Employee.value); // Convert JSON data to worksheet
+  const workbook = XLSX.utils.book_new(); // Create a new workbook
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Employee Data'); // Append sheet to workbook
+  //generate excel for download
+  XLSX.writeFile(workbook, 'EmployeeDetails.xlsx');
+};
 
 onMounted(fetchEmp);
 </script>

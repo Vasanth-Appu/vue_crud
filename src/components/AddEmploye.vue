@@ -10,15 +10,13 @@
               <v-col cols="12" md="12">
                 <v-text-field
                   v-model="form.id"
-                  :rules="[() => !v$.id.$invalid || 'Id is required']"
                   label="Id"
                   hide-details
                   required
                   @blur="v$.id.$touch()"
                 ></v-text-field>
-                <v-error-message v-if="v$.id.$invalid && v$.id.$touched">
-                  {{ v$.id.$errors[0].$message }}
-                </v-error-message>
+                <span class="text-error" v-if="v$.id.$error"> {{ v$.id.$errors[0].$message }} </span>
+
               </v-col>
 
               <v-col cols="12" md="12">
@@ -30,23 +28,20 @@
                   required
                   @blur="v$.email.$touch()" 
                 ></v-text-field>
-                <v-error-message v-if="v$.email.$invalid && v$.email.$touched">
-                  {{ v$.email.$errors[0].$message }}
-                </v-error-message>
+                <span class="text-error" v-if="v$.email.$error"> {{ v$.email.$errors[0].$message }} </span>
+
               </v-col>
 
               <v-col cols="12" md="12">
                 <v-text-field
                   v-model="form.name"
-                  :rules="[() => !v$.name.$invalid || 'Name is required']"
                   label="Name"
                   hide-details
                   required
                   @blur="v$.name.$touch()"
                 ></v-text-field>
-                <v-error-message v-if="v$.name.$invalid && v$.name.$touched">
-                  {{ v$.name.$errors[0].$message }}
-                </v-error-message>
+                <span class="text-error" v-if="v$.name.$error"> {{ v$.name.$errors[0].$message }} </span>
+
               </v-col>
 
               <v-col cols="12" md="12">
@@ -58,23 +53,20 @@
                   required
                   @blur="v$.contact.$touch()" 
                 ></v-text-field>
-                <v-error-message v-if="v$.contact.$invalid && v$.contact.$touched">
-                  {{ v$.contact.$errors[0].$message }}
-                </v-error-message>
+                <span class="text-error" v-if="v$.contact.$error"> {{ v$.contact.$errors[0].$message }} </span>
+
               </v-col>
 
               <v-col cols="12" md="12">
                 <v-text-field
                   v-model="form.address"
-                  :rules="[() => !v$.address.$invalid || 'Address is required']"
                   label="Address"
                   hide-details
                   required
                   @blur="v$.address.$touch()"
                 ></v-text-field>
-                <v-error-message v-if="v$.address.$invalid && v$.address.$touched">
-                  {{ v$.address.$errors[0].$message }}
-                </v-error-message>
+                <span class="text-error" v-if="v$.address.$error"> {{ v$.address.$errors[0].$message }} </span>
+
               </v-col>
             </v-row>
           </v-container>
@@ -91,7 +83,7 @@
 
 <script setup>
 import useVuelidate from '@vuelidate/core';
-import { email, required } from '@vuelidate/validators';
+import { alpha, email, maxLength, minLength, numeric, required } from '@vuelidate/validators';
 import { computed, defineEmits, defineProps, reactive, ref, watch } from 'vue';
 
 const props = defineProps({
@@ -126,9 +118,9 @@ const form = reactive({
 const rules = computed(()=>({
   id: { required },
   email: { required, email },
-  name: { required },
-  contact: { required },
-  address: { required },
+  name: { required,minLength: minLength(3),alpha},
+  contact: { required,numeric,maxLength:maxLength(10),minLength:minLength(10)},
+  address: { required,minLength: minLength(4)},
 }));
 
 const v$ = useVuelidate(rules, form);
