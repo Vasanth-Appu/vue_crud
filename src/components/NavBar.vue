@@ -5,7 +5,7 @@
       <v-app-bar-nav-icon @click="toggleDrawer" />
     </template>
 
-    <v-app-bar-title>Application Bar</v-app-bar-title>
+    <v-app-bar-title>Abc Company</v-app-bar-title>
     <v-spacer />
 
     <v-btn text @click="goToHome">Home</v-btn>

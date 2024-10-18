@@ -18,10 +18,10 @@
       </div>
       
       <v-container>
-      <v-skeleton-loader 
+        <v-skeleton-loader 
+      type="table"
       v-if="isLoading" 
       :loading="isLoading" 
-      type="table"
     />
       <div class="justify-center">
         <v-data-table
@@ -34,7 +34,8 @@
           v-if="Employee.length > 0 && !fetchError"
           
         >
-          <template #item.actions="{ item }">
+        
+          <template v-slot:[`item.actions`]="{ item }">
             <v-btn rounded="xl" size="small" variant="outlined" @click="EditEmployeeModal(item)" class="mx-2" color="info" >Edit</v-btn>
             <v-btn rounded="xl" size="small" variant="outlined" @click="deleteEmployee (item)" class="mx-2" color="error">Delete</v-btn>
           </template>
@@ -44,13 +45,13 @@
               <v-toolbar-title>Employees List</v-toolbar-title>
               <v-spacer></v-spacer>
               <div>
-                <v-btn color="primary" @click="addEmployeeModal" class="mx-2">Add Employee</v-btn>
+                <v-btn color="blue" variant="tonal" @click="addEmployeeModal" class="mx-2">Add Employee</v-btn>
                 <AddEmploye
                   :openModal="openModal"
                   @form-submit="handleFormSubmit"
                   @close-modal="closeModal"
                 />
-                <v-btn color="warning" @click="exportToExcel" class="mx-2">Export Excel</v-btn>
+                <v-btn color="#66BB6A" variant="tonal" @click="exportToExcel" class="mx-2">Export Excel</v-btn>
               </div>
             </v-toolbar>
 
@@ -69,9 +70,16 @@
         <v-alert v-if="updateMsg" type="info" class="ma-4" dismissible>
           {{ updateMsg }}
         </v-alert>
-        <v-alert v-if="fetchMsg" type="error" class="ma-4" dismissible>
-          {{ fetchMsg}}
-        </v-alert>
+        <v-snackbar 
+  v-if="fetchMsg" 
+  :timeout="30000"
+  color="error" 
+  class="ma-4" 
+  v-model="fetchMsg"
+  dismissible>
+  {{ fetchMsg }} 
+</v-snackbar>
+
         <v-alert v-if="saveMsg" type="success" class="ma-4" dismissible>
           {{ saveMsg }}
         </v-alert>
@@ -98,8 +106,8 @@
         <span class="ml-2">Confirmation</span> <!-- Optional title for the modal -->
       </v-card-title>
       
-      <v-card-text>
-        Are you sure you want to delete the employee with ID: 
+      <v-card-text class = "text-h5">
+        Are you sure,You want to delete this employee ID: 
         <strong>{{ employeeToDelete?.id }}</strong>? <!-- Display the specific employee ID -->
       </v-card-text>
       <v-card-actions>
@@ -122,12 +130,12 @@ import NavBar from './NavBar.vue';
 
 const Employee = ref([]);
 const Header = ref([
-  { text: 'Emp ID', value: 'id' },
-  { text: 'Name', value: 'name' },
-  { text: 'Email', value: 'email' },
-  { text: 'Contact', value: 'contact' },
-  { text: 'Address', value: 'address' },
-  { text: 'Actions', value: 'actions', sortable: false },
+  { title: 'Emp ID', key: 'id' },
+  { title: 'Name', value: 'name' },
+  { title: 'Email', value: 'email' },
+  { title: 'Contact', value: 'contact' },
+  { title: 'Address', value: 'address' },
+  { title: 'Actions', value: 'actions', sortable: false },
 ]);
 const deleteMsg=ref('');
 const saveMsg = ref ('');
@@ -265,4 +273,5 @@ const exportToExcel = () => {
 };
 
 onMounted(fetchEmp);
+
 </script>
