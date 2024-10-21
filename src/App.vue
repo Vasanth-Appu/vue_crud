@@ -1,12 +1,11 @@
 <!-- src/App.vue -->
 <template>
   <v-app>
-    <HomePage />
+    <router-view />
   </v-app>
 </template>
 
 <script setup>
-import HomePage from './components/HomePage.vue';
 
 // No need for any specific imports here
 </script>

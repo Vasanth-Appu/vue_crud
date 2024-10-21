@@ -6,13 +6,22 @@
         <v-list-item
           v-for="(item, index) in menuItems"
           :key="index"
-          @click="handleNavigation(item.title)"
+          :class="{ 'v-list-item--active': isActive(item.route) }"
+          @click="handleNavigation(item.route)"
         >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item-content class="d-flex align-center">
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-title class="ml-3">
+              <router-link
+                :to="item.route || '/'"
+                class="text-decoration-none"
+              >
+                {{ item.title }}
+              </router-link>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -22,6 +31,7 @@
 
 <script setup>
 import { defineEmits, defineProps, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router'; // Import Vue Router's useRouter
 
 // Define props and emit events
 const props = defineProps({
@@ -32,6 +42,10 @@ const props = defineProps({
 });
 const emit = defineEmits(['closeDrawer']);
 
+// Initialize Vue Router
+const router = useRouter();
+const route=useRoute();
+
 // Reactive state for the drawer
 const localDrawer = ref(props.drawer);
 
@@ -40,21 +54,28 @@ watch(() => props.drawer, (newVal) => {
   localDrawer.value = newVal;
 });
 
-// Updated menu items
+// Menu items with routes
 const menuItems = ref([
-  { title: 'Home', icon: 'mdi-home' },
-  { title: 'Profile', icon: 'mdi-account' },
-  { title: 'Menu', icon: 'mdi-menu' },
-  { title: 'Contact', icon: 'mdi-phone' },
+  { title: 'Home', icon: 'mdi-home', route: '/' },
+  { title: 'Profile', icon: 'mdi-account', route: '/profile' },
+  { title: 'Menu', icon: 'mdi-menu', },
+  { title: 'Contact', icon: 'mdi-phone', },
   { title: 'Settings', icon: 'mdi-cog' },
 ]);
 
-const handleNavigation = (title) => {
-  console.log(`Navigating to: ${title}`);
-  emit('closeDrawer'); // Close the drawer after clicking
+const handleNavigation = (route) => {
+  
+    router.push(route).catch((err) => console.error(err)); // Ensure navigation happens
+   // emit('closeDrawer'); // Close the drawer
+  
+};
+const isActive = (itemRoute) => {
+  return route.path === itemRoute; // Compare the current route path with the item route
 };
 </script>
 
 <style scoped>
-/* Optional: Custom styling */
+.v-list-item--active {
+  background-color: rgba(255, 255, 255, 0.1); /* Optional: Customize the active item background color */
+}
 </style>

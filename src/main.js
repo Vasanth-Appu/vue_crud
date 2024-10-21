@@ -1,22 +1,23 @@
+// main.js
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import App from './App.vue';
-import './assets/main.css'; // Your global CSS file
-import router from './router'; // Your Vue Router setup
+import './assets/main.css'; // Global CSS file
+import router from './router'; // Vue Router setup
 
-// Import Vuetify and styles
-import '@mdi/font/css/materialdesignicons.css'; // Import Material Design Icons
-import { createVuetify } from 'vuetify'; // Import createVuetify
-import * as components from 'vuetify/components'; // Import all Vuetify components
-import * as directives from 'vuetify/directives'; // Import all Vuetify directives
-import 'vuetify/styles'; // Import Vuetify styles
+// Vuetify imports
+import '@mdi/font/css/materialdesignicons.css'; // Material Design Icons
+import { createVuetify } from 'vuetify'; // Vuetify setup
+import * as components from 'vuetify/components'; // Vuetify components
+import * as directives from 'vuetify/directives'; // Vuetify directives
+import 'vuetify/styles'; // Vuetify styles
 
-// Create a Vuetify instance
+// Create Vuetify instance
 const vuetify = createVuetify({
-  components, // Register components
-  directives, // Register directives
+  components,
+  directives,
   theme: {
-    defaultTheme: 'light', // Set the default theme to light or dark
+    defaultTheme: 'light', // Set the default theme
     themes: {
       light: {
         colors: {
@@ -33,13 +34,13 @@ const vuetify = createVuetify({
   },
 });
 
-// Create the Vue app instance
+// Create Vue app instance
 const app = createApp(App);
 
-// Use Pinia and Vue Router
+// Use plugins: Pinia, Router, and Vuetify
 app.use(createPinia());
 app.use(router);
-app.use(vuetify); // Use Vuetify
+app.use(vuetify);
 
-// Mount the app to the DOM
+// Mount the app to the #app div in index.html
 app.mount('#app');
