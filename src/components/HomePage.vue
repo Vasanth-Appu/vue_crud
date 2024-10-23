@@ -124,6 +124,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import * as XLSX from 'xlsx';
+import { useCounterStore } from '../stores/empStore.js';
 import AddEmploye from './AddEmploye.vue';
 import EditEmp from './EditEmp.vue';
 import NavBar from './NavBar.vue';
@@ -146,17 +147,25 @@ const isLoading = ref(true);
 const page = ref(1);
 const itemsPerPage = ref(5);
 const addEmp=ref(false);
+const empStore = useCounterStore();//store instance
+
 
 const fetchEmp = async () => {
   try {
     const response = await fetch('http://localhost:8080/getUser');
     
     if (!response.ok) throw new Error('Response is not OK');
-    Employee.value = await response.json();
+    
+  const data = await response.json();
+  Employee.value=data;
+//console.log(Employee.value);
+
     if (Employee.value <= 0 || Employee.value === null){
       addEmp.value=true;
+    }else{
+    empStore.setEmployee(Employee.value);// set pinia store
+  }
 
-    }
   } catch (error) {
     console.error('Error fetching data: ', error);
     fetchMsg.value = 'Failed To Fetch';
@@ -271,6 +280,10 @@ const exportToExcel = () => {
   //generate excel for download
   XLSX.writeFile(workbook, 'EmployeeDetails.xlsx');
 };
+
+
+
+
 
 onMounted(fetchEmp);
 

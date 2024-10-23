@@ -70,12 +70,17 @@ const handleNavigation = (route) => {
   
 };
 const isActive = (itemRoute) => {
-  return route.path === itemRoute; // Compare the current route path with the item route
+  return route.path === itemRoute; 
 };
+
 </script>
 
 <style scoped>
 .v-list-item--active {
-  background-color: rgba(255, 255, 255, 0.1); /* Optional: Customize the active item background color */
+  background-color: #388E3C  ; /* Optional: Customize the active item background color */
+}
+.text-decoration-none{
+  color:#E8F5E9  ;
+  font-family: 'Times New Roman', Times, serif;
 }
 </style>
