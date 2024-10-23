@@ -7,12 +7,21 @@
 
     <v-app-bar-title>Abc Company</v-app-bar-title>
     <v-spacer />
-
+    
     <v-btn text @click="goToHome">Home</v-btn>
     <v-btn text @click="goToAbout">About</v-btn>
     <v-btn text @click="goToContact">Contact</v-btn>
     <v-btn text @click="goToProfile">Profile</v-btn>
     <v-btn text @click="logout">Logout</v-btn>
+    <v-switch
+  v-model="isDark"
+  @change="toggleTheme"
+ class="mt-5 mr-4">
+  <template #label>
+    <v-icon>{{ isDark ? 'mdi-weather-night' : 'mdi-weather-sunny' }}</v-icon>
+  </template>
+</v-switch>
+
   </v-app-bar>
 
   <!-- Passing `drawer` as a prop to NavDrawer -->
@@ -20,19 +29,31 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { defineProps, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useTheme } from 'vuetify/lib/framework.mjs';
 import NavDrawer from './NavDrawer.vue'; // Ensure correct path
-
 const router = useRouter();
 
-const drawer = ref(false);
+const drawer = ref(true);
 
 const toggleDrawer = () => {
   drawer.value = !drawer.value;
   console.log('Drawer toggled:', drawer.value);
 };
+const props = defineProps({
+  opentoggle: {
+    type: Boolean,
+    required: true,
+  },
+});
+//DrkMode
+const theme = useTheme();
+const isDark = ref(false);
 
+const toggleTheme = () => {
+  theme.global.name.value = isDark.value ? 'dark' : 'light';
+};
 // Navigation actions
 const goToHome = () => router.push('/');
 const goToAbout = () => router.push('/about');

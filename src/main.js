@@ -30,6 +30,16 @@ const vuetify = createVuetify({
           warning: '#FFC107',
         },
       },
+      dark: {
+        colors: {
+          primary: '#BB86FC',
+          secondary: '#03DAC5',
+          background: '#121212',
+          surface: '#333',
+          error: '#CF6679',
+          success: '#03DAC6',
+        },
+      },
     },
   },
 });

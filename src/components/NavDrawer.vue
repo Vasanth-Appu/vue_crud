@@ -65,8 +65,8 @@ const menuItems = ref([
 
 const handleNavigation = (route) => {
   
-    router.push(route).catch((err) => console.error(err)); // Ensure navigation happens
-   // emit('closeDrawer'); // Close the drawer
+    router.push(route).catch((err) => console.error(err)); // Ensure navigation 
+   emit('closeDrawer'); // Close the drawer
   
 };
 const isActive = (itemRoute) => {

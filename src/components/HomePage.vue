@@ -99,23 +99,29 @@
     </v-container>
    
     <template>
-  <v-dialog v-model="confirmDeleteModal" max-width="600px" persistent>
-    <v-card>
-      <v-card-title>
-        <v-icon color="orange" large>mdi-alert</v-icon> <!-- Exclamation icon -->
-        <span class="ml-2">Confirmation</span> <!-- Optional title for the modal -->
-      </v-card-title>
-      
-      <v-card-text class = "text-h5">
-        Are you sure,You want to delete this employee ID: 
-        <strong>{{ employeeToDelete?.id }}</strong>? <!-- Display the specific employee ID -->
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="success" variant="outlined" rounded="lg" size="large" @click="confirmDelete">YES</v-btn>
-        <v-btn color="red" variant="tonal" rounded="lg" size="large" @click="confirmDeleteClose">NO</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      <v-dialog v-model="confirmDeleteModal" max-width="400px" persistent>
+  <v-card>
+    <!-- Centering the Icon -->
+    <v-card-title class="icon-center">
+      <v-icon color="orange" size="68">mdi-alert-circle</v-icon> <!-- Exclamation icon -->
+    </v-card-title>
+
+    <v-card-text class="text-h6   text-center">
+      Are you sure you want to delete this employee ID: 
+      <strong>{{ employeeToDelete?.id }}</strong>? <!-- Display employee ID -->
+    </v-card-text>
+
+    <v-card-actions class="justify-center">
+      <v-btn color="success" variant="outlined" rounded="lg" size="large" @click="confirmDelete">
+        YES
+      </v-btn>
+      <v-btn color="red" variant="tonal" rounded="lg" size="large" @click="confirmDeleteClose">
+        NO
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
+
 </template>
 
 
@@ -288,3 +294,11 @@ const exportToExcel = () => {
 onMounted(fetchEmp);
 
 </script>
+<style scoped>
+.icon-center {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100px; /* Optional: Adjust height as needed */
+}
+</style>
