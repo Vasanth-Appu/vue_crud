@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+	<head>
+			<title>not found</title>
+		</head>
+		<body>
+			<h2>UserId already exists</h2>
+   
+			</form>
+		</body>
+</html>	
+	<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+	<head>
+			<title>Update Epmloyee</title>
+		</head>
+		<body>
+			
+    <center>
+    <form th:action="@{/updateId/{id} (id=${emp.id})}" method="get" th:object="${emp}">
+				
+				<div class="wrapper">
+				<label for="name">Name </label>
+				<input 	  type="text"th:field="*{name}"><br>
+				
+				
+				
+				<label for="address">Address</label>
+				<input  type="text"th:field="*{address}" ><br>
+				
+				<label for="email">Email</label>
+				<input  type="email"th:field="*{email}"><br>
+				
+				<label for="contact">Contact</label>
+				<input  type="number"th:field="*{contact}"><br>
+				
+				<button  type="submit">Submit</button>
+				</div>
+				<style>
+        div.wrapper {
+            position:  absolute;
+            top : 200px;
+            left: 300px;
+            width: 300px;
+            height:300px;
+            border:10px solid red;
+        }
+
+        input[type="text"] {
+             position: relative;
+             display: block;
+             margin : 0 auto;
+        }	
+        </style>
+				
+			</form>
+			</center>
+		
+			
+		</body>
+</html>		

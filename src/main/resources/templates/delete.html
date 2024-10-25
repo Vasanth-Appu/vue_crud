@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+	<head>
+			<title>Update Epmloyee</title>
+		</head>
+		<body>
+    <form th:action="@{/deleteId/{id} (id=${employee.id})}" method="get" th:object="${emp}">
+				<label for="id">Emp Id  </label>
+				<input  type="number"th:field="*{id}">
+				
+				<button  type="submit">Submit</button>
+			</form>
+		</body>
+</html>		
