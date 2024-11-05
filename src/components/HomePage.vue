@@ -1,11 +1,11 @@
 <template>
-  <NavBar />
+  <NavBar @theme-light="themeimg" />
 
   <v-main>
    
 
       <div class="home-page text-center">
-        <h1>Employee Details</h1>
+        <h1>Employee Details</h1> 
 
         <h4 v-if="addEmp">No data found Please Add Some data</h4>
         <v-btn color="blue" v-if="addEmp" @click="addEmployeeModal">Add New Emp</v-btn>
@@ -23,7 +23,7 @@
       v-if="isLoading" 
       :loading="isLoading" 
     />
-      <div class="justify-center">
+      <div class="justify-center themetable">
         <v-data-table
           :headers="Header"
           :items="Employee"
@@ -34,6 +34,7 @@
           v-if="Employee.length > 0 && !fetchError"
           
         >
+      
         
           <template v-slot:[`item.actions`]="{ item }">
             <v-btn rounded="xl" size="small" variant="outlined" @click="EditEmployeeModal(item)" class="mx-2" color="info" >Edit</v-btn>
@@ -44,7 +45,7 @@
             <v-toolbar flat>
               <v-toolbar-title>Employees List</v-toolbar-title>
               <v-spacer></v-spacer>
-              <div>
+              <div class="thbtn">
                 <v-btn color="blue" variant="tonal" @click="addEmployeeModal" class="mx-2">Add Employee</v-btn>
                 <AddEmploye
                   :openModal="openModal"
@@ -74,7 +75,8 @@
   v-if="fetchMsg" 
   :timeout="30000"
   color="error" 
-  class="ma-4" 
+  class="ma-4 mt-16" 
+    location="top center"
   v-model="fetchMsg"
   dismissible>
   {{ fetchMsg }} 
@@ -286,19 +288,36 @@ const exportToExcel = () => {
   //generate excel for download
   XLSX.writeFile(workbook, 'EmployeeDetails.xlsx');
 };
+// const darkMode = ref( null );
+// const themeimg = (isDark) => {
+//   setTimeout(() => {
+//     darkMode.value = isDark;
+//     console.log("Theme changed:", darkMode.value ? 'Dark' : 'Light');
+//     console.log(darkMode.value);
+    
+//   }, 2000);
+// };s
 
-
-
-
+// const modeIcon = computed(() => {
+//   return darkMode.value
+//     ? 'https://thumbs.dreamstime.com/z/waning-crescent-moon-clouds-isolated-transparent-background-stand-alone-your-own-design-333353858.jpg?ct=jpeg'   // Moon icon for dark mode
+//     : '.../src/assets/sun.png';   // Sun icon for light mode
+// });
 
 onMounted(fetchEmp);
 
 </script>
 <style scoped>
+
 .icon-center {
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
   height: 100px; /* Optional: Adjust height as needed */
 }
+
+
+
+ 
+ 
 </style>

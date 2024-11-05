@@ -29,17 +29,19 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineEmits, defineProps, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useTheme } from 'vuetify/lib/framework.mjs';
 import NavDrawer from './NavDrawer.vue'; // Ensure correct path
+const emit = defineEmits(['theme-light']);
+
+
 const router = useRouter();
 
 const drawer = ref(true);
 
 const toggleDrawer = () => {
   drawer.value = !drawer.value;
-  console.log('Drawer toggled:', drawer.value);
 };
 const props = defineProps({
   opentoggle: {
@@ -49,10 +51,14 @@ const props = defineProps({
 });
 //DrkMode
 const theme = useTheme();
+//const isDark = ref(localStorage.getItem('isDark') === 'true');
 const isDark = ref(false);
 
 const toggleTheme = () => {
   theme.global.name.value = isDark.value ? 'dark' : 'light';
+  localStorage.setItem('isDark', isDark.value);
+  emit('theme-light',isDark.value);
+
 };
 // Navigation actions
 const goToHome = () => router.push('/');
