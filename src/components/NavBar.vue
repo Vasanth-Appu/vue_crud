@@ -43,12 +43,12 @@ const drawer = ref(true);
 const toggleDrawer = () => {
   drawer.value = !drawer.value;
 };
-const props = defineProps({
-  opentoggle: {
-    type: Boolean,
-    required: true,
-  },
-});
+// const props = defineProps({
+//   opentoggle: {
+//     type: Boolean,
+//     required: true,
+//   },
+// });
 //DrkMode
 const theme = useTheme();
 //const isDark = ref(localStorage.getItem('isDark') === 'true');
