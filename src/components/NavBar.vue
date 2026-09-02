@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, ref } from 'vue';
+import { defineEmits, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useTheme } from 'vuetify/lib/framework.mjs';
 import NavDrawer from './NavDrawer.vue'; // Ensure correct path
