@@ -1,9 +1,7 @@
 <!-- src/App.vue -->
 <template>
   <v-app>
-            <h1>Hi Dude</h1>
-
-    <!-- <router-view /> -->
+    <router-view />
 
   </v-app>
 
