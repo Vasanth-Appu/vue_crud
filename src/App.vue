@@ -1,10 +1,10 @@
 <!-- src/App.vue -->
 <template>
   <v-app>
-    <router-view />
+    <!-- <router-view /> -->
+      <h1>Hi Dude</h1>
 
   </v-app>
-
 </template>
 
 <script setup>
