@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, ref } from 'vue';
+import { defineEmits, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useTheme } from 'vuetify/lib/framework.mjs';
 import NavDrawer from './NavDrawer.vue'; // Ensure correct path
@@ -43,12 +43,12 @@ const drawer = ref(true);
 const toggleDrawer = () => {
   drawer.value = !drawer.value;
 };
-const props = defineProps({
-  opentoggle: {
-    type: Boolean,
-    required: true,
-  },
-});
+// const props = defineProps({
+//   opentoggle: {
+//     type: Boolean,
+//     required: true,
+//   },
+// });
 //DrkMode
 const theme = useTheme();
 //const isDark = ref(localStorage.getItem('isDark') === 'true');
